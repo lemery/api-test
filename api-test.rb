@@ -29,8 +29,9 @@ post '/request/:name' do
   
   # Snags the url of the url triggering the post request. By default this will be
   # http://localhost:4567/request/:name, but this method will work when transplanted
-  uri = URI.parse(URI.encode("#{request.base_url}#{request.fullpath}"))
+  uri = URI.parse(URI.encode(request_data["target_url"]))
   
+  http = Net::HTTP.new(uri.host, uri.port)
   # Warning! When using this on an app that requires actual security, you must
   # make the https route actually secure. See the explanation how to at
   # http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html
@@ -38,25 +39,26 @@ post '/request/:name' do
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
   end
-  http = Net::HTTP.new(uri.host, uri.port)
   # Extend this case statement when needed to allow for more request types
   case params[:name]
   when "post"
-    request = Net::HTTP::Post.new(request_data["target_url"])
+    req = Net::HTTP::Post.new(uri.path + (uri.query ? uri.query : ''))
   when "get"
-    request = Net::HTTP::Get.new(request_data["target_url"])
+    req = Net::HTTP::Get.new(uri.path + (uri.query ? uri.query : ''))
   when "put"
-    request = Net::HTTP::Put.new(request_data["target_url"])
+    req = Net::HTTP::Put.new(uri.path + uri.query ? uri.query : '')
   end
   # Sets any headers needed
   if request_data["headers"]
     request_data["headers"].each do |header, value|
-      request[header] = value
+      req[header] = value
     end
   end
-  request.body = request_data["body"].to_json
-  response = http.request(request)
+  req.body = request_data["body"].to_json
+  response = http.request(req)
   STDERR.puts("Response Code: #{response.code}")
+  STDERR.puts("Response Body: #{response.body}")
+  STDERR.puts("Response Message: #{response.msg}")
   
   redirect to("/success")
 end
