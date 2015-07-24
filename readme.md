@@ -1,0 +1,1 @@
+This was a quick project to test/demo making api requests from a Sinatra server.

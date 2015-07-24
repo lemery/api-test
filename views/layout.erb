@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>HTTP Requester</title>
+	<style>
+		.navbar {
+			width: 100%;
+			background-color: #747474;
+			padding: 15px;
+		}
+		.navbar > ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+		.navbar > ul > li {
+			display: inline;
+			float: left;
+		}
+		.navbar > ul > li > a {
+			display: block;
+			width: 60px;
+			color: #ffffff;
+		}
+		.clearfix:after {
+			content: ".";
+			display: block;
+			height: 0;
+			clear: both;
+			visibility: hidden;
+		}
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #444444;
+			color: #ffffff;
+		}
+	</style>
+</head>
+<body>
+	<div class="navbar clearfix">
+		<ul>
+			<li><a href="/request/get">Get</a></li>
+			<li><a href="/request/post">Post</a></li>
+			<li><a href="/request/put">Put</a></li>
+		</ul>
+	</div>
+	<%= yield %>
+</body>

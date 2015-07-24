@@ -1,0 +1,8 @@
+<form action="<%= request.path_info %>" method="POST">
+	<input type="text" name="request_type" value="<%= get_request_type %>" style="visibility:hidden; width:0;">
+	<span style="display:inline-block; margin: 10px;">
+		<label for="filename" style="display:block">File Name</label>
+		<input type="text" name="filename"/>
+		<input type="submit" value="Submit">
+	</span>
+</form>
